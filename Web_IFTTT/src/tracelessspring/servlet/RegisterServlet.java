@@ -1,5 +1,6 @@
 package tracelessspring.servlet;
 
+import tracelessspring.form.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -24,7 +25,8 @@ public class RegisterServlet extends HttpServlet {
        
 	private PreparedStatement st;
 	private Connection conn;
-	
+	private String out_info;
+	private RegisterForm form;
     /**
      * @throws SQLException 
      * @throws ClassNotFoundException 
@@ -50,6 +52,15 @@ public class RegisterServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
+	
+	/*初始化用户提交的用户表单*/
+	private void init_form(String userName,String userPwd,String confirmPwd,String userMail){
+		form=new RegisterForm();
+		form.setUserName(userName); 
+		form.setUserPwd(userPwd); 
+		form.setUserMail(userMail); 
+	}
+	
 	private void link2mysql(){
 		String url="jdbc:mysql://localhost:3306/first";
 		String username="root";
@@ -110,8 +121,10 @@ public class RegisterServlet extends HttpServlet {
 		}
 		System.out.println("insert a user to mysql");
 	}
-	protected boolean name_conflict(String userName){
+	protected boolean form_validate(String userName){
+		out_info="";
 		link2mysql();
+
 		try {
 			st=conn.prepareStatement("select * from users");
 		} catch (SQLException e) {
@@ -126,11 +139,26 @@ public class RegisterServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		boolean correct=false;
+		
+		boolean correct=true;
+		
+		/*boolean name_validate=true;
+		boolean password_validate=true;
+		
+		if(userName.length()>30||!userName.matches("^(?!_)(?!.*?_$)[a-zA-Z0-9_]+$")){
+			name_validate-false;
+		}
+		while(rs.next()){
+			if(userName.equals(rs.getString("name"))){
+				name_validate=false;
+				break;
+			}
+			if()
+		}*/
 		try {
 			while(rs.next()){
 				if(userName.equals(rs.getString("name"))){
-					correct=true;
+					correct=false;
 					break;
 				}
 			}
@@ -158,10 +186,20 @@ public class RegisterServlet extends HttpServlet {
 		}
 		return correct;
 	}
-	
+
 	
 	
 	protected void doAction(HttpServletRequest request, HttpServletResponse response){
+		
+		
+		String userName=request.getParameter("userName");
+		String userPwd=request.getParameter("userPwd");
+		String confirmPwd=request.getParameter("confirmPwd");
+		String userMail=request.getParameter("userMail");
+		
+		init_form(userName,userPwd,confirmPwd,userMail);
+		
+		
 		response.setContentType("text/html");
 		PrintWriter out = null;
 		try {
@@ -170,18 +208,34 @@ public class RegisterServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		String userName=request.getParameter("userName");
+		
+		System.out.print(form.getUserName());
+		System.out.print(form.getUserPwd());
+		System.out.print(form.getUserMail());
+		/*String userName=request.getParameter("userName");
 		String userPwd=request.getParameter("userPwd");
 		String confirmPwd=request.getParameter("confirmPwd");
+		String userMail=request.getParameter("userMail");
 		out.println(userName);
 		out.println(userPwd);
 		out.println(confirmPwd);
 		
-		if(name_conflict(userName)){
-			System.out.println("you username have been used by another one,please use a new username");
-			String message=String.format("your username have been seleted by other people,please choose a new username!"
-					+ "<meta http-equiv='refresh' content='3;url=%s'",request.getContextPath()+"/register.jsp" );
-			request.setAttribute("message", message);
+		RegisterForm form=new RegisterForm();
+		form.setUserName(userName); 
+		form.setUserPwd(userPwd); 
+		form.setUserMail(userMail); 
+		out.println(form.getUserName());
+		out.println(form.getUserPwd());
+		out.println(form.getUserMail());*/
+		
+		
+		if(!form_validate(userName)){
+			out.print("you username have been used by another one,please use a new username");
+			System.out.println("here is");
+			//System.out.println("you username have been used by another one,please use a new username");
+			/*String message=String.format("your username have been seleted by other people,please choose a new username!"
+					+ "<meta http-equiv='refresh' content='3;url=%s'",request.getContextPath()+"/register.jsp" );*/
+			/*request.setAttribute("message", message);
 			try {
 				request.getRequestDispatcher("/WEB-INF/pages/message.jsp").forward(request, response);
 			} catch (ServletException e) {
@@ -190,7 +244,7 @@ public class RegisterServlet extends HttpServlet {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
 		}
 		else{
 			insert2mysql(userName,userPwd);
@@ -205,9 +259,6 @@ public class RegisterServlet extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		
-		
-		
+		}	
 	}
 }
