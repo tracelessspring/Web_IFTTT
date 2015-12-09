@@ -1,5 +1,8 @@
 package tracelessspring.form;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class RegisterForm {
 	private String userName;
 	private String userPwd;
