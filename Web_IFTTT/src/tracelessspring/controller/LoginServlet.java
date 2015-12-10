@@ -1,36 +1,28 @@
-package tracelessspring.servlet;
+package tracelessspring.controller;
 
-import tracelessspring.form.*;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import tracelessspring.model.Dao;
 
 /**
- * Servlet implementation class RegisterServlet
+ * Servlet implementation class LoginServlet
  */
-@WebServlet("/RegisterServlet")
-public class RegisterServlet extends HttpServlet {
+@WebServlet("/LoginServlet")
+public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-	private PreparedStatement st;
-	private Connection conn;
+    
+	//private PreparedStatement st;
+	//private Connection conn;
     /**
-     * @throws SQLException 
-     * @throws ClassNotFoundException 
      * @see HttpServlet#HttpServlet()
      */
-    public RegisterServlet() throws ClassNotFoundException, SQLException {
+    public LoginServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -43,6 +35,7 @@ public class RegisterServlet extends HttpServlet {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		doAction(request,response);
 	}
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -51,7 +44,7 @@ public class RegisterServlet extends HttpServlet {
 		doGet(request, response);
 	}
 	
-	private void link2mysql(){
+	/*private void link2mysql(){
 		String url="jdbc:mysql://localhost:3306/first";
 		String username="root";
 		String password="5801lc";
@@ -69,58 +62,16 @@ public class RegisterServlet extends HttpServlet {
 			System.out.println("cannot connected to mysql");
 			e.printStackTrace();
 		}
-	}
-	private void insert2mysql(String userName,String userPwd){
+	}*/
+	
+	/*protected boolean login_right(String userName,String userPwd){
 		link2mysql();
-		try {
-			st=conn.prepareStatement("insert into users(name,password) values(?,?)");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			st.setString(1, userName);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			st.setString(2, userPwd);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			st.executeUpdate();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			System.out.println("error in executeUpdate");
-			e.printStackTrace();
-		}
-		try {
-			st.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			conn.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("insert a user to mysql");
-	}
-	protected boolean form_validate(String userName){
-		link2mysql();
-
 		try {
 			st=conn.prepareStatement("select * from users");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		boolean correct=true;
 		ResultSet rs = null;
 		try {
 			rs = st.executeQuery();
@@ -128,10 +79,11 @@ public class RegisterServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		boolean correct=false;
 		try {
 			while(rs.next()){
-				if(userName.equals(rs.getString("name"))){
-					correct=false;
+				if(userName.equals(rs.getString("userName"))&&userPwd.equals(rs.getString("userPwd"))){
+					correct=true;
 					break;
 				}
 			}
@@ -158,50 +110,32 @@ public class RegisterServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 		return correct;
-	}
-
+	}*/
+	
 	
 	
 	protected void doAction(HttpServletRequest request, HttpServletResponse response){
-
-		String userName=request.getParameter("userName");
-		String userPwd=request.getParameter("userPwd");
-		String userMail=request.getParameter("userMail");
-		
-		
-		/*response.setContentType("text/html");
+		response.setContentType("text/html");
 		PrintWriter out = null;
 		try {
 			out = response.getWriter();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
-		
-		/*System.out.print(form.getUserName());
-		System.out.print(form.getUserPwd());
-		System.out.print(form.getUserMail());*/
-		/*String userName=request.getParameter("userName");
+		}
+		String userName=request.getParameter("userName");
 		String userPwd=request.getParameter("userPwd");
-		String confirmPwd=request.getParameter("confirmPwd");
-		String userMail=request.getParameter("userMail");
+	
 		out.println(userName);
 		out.println(userPwd);
-		out.println(confirmPwd);
 		
-		RegisterForm form=new RegisterForm();
-		form.setUserName(userName); 
-		form.setUserPwd(userPwd); 
-		form.setUserMail(userMail); 
-		out.println(form.getUserName());
-		out.println(form.getUserPwd());
-		out.println(form.getUserMail());*/
+		if(Dao.login_validate(userName,userPwd)){
+			System.out.println("find the user");
+			
+			request.getSession().setAttribute("userName", userName);
 		
-		
-		if(!form_validate(userName)){
-			//System.out.println("you username have been used by another one,please use a new username");
-			String message=String.format("your username have been seleted by other people,please choose a new username!"
-					+ "<meta http-equiv='refresh' content='3;url=%s'",request.getContextPath()+"/register.jsp" );
+			String message=String.format("congulations!%s,you've been login successfully!!!<meta http-equiv='refresh' content='3;url=%s'",
+					userName,request.getContextPath()+"/index.jsp"); 
 			request.setAttribute("message", message);
 			try {
 				request.getRequestDispatcher("/WEB-INF/pages/message.jsp").forward(request, response);
@@ -214,8 +148,9 @@ public class RegisterServlet extends HttpServlet {
 			}
 		}
 		else{
-			insert2mysql(userName,userPwd);
-			String message=String.format("register successfully!!!<meta http-equiv='refresh' content='3;url=%s'",request.getContextPath()+"/login.jsp");
+			System.out.println("cannot find the user");
+			String message=String.format("error in username or password,please check it!!!<meta http-equiv='refresh' content='3;url=%s'",
+					request.getContextPath()+"/login.jsp"); 
 			request.setAttribute("message", message);
 			try {
 				request.getRequestDispatcher("/WEB-INF/pages/message.jsp").forward(request, response);
@@ -226,6 +161,25 @@ public class RegisterServlet extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}	
+		}
+		
+		
+		
+		/*try {
+			st.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("here is up");*/
+		
+		
 	}
 }
+
