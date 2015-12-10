@@ -7,6 +7,15 @@
 <title>MyIFTTT</title>
 </head>
 
+<script language="JavaScript">
+function jumpMenu(e){
+	System.out.println("in jumpMenu");
+	window.location.href=e.value;
+}
+</script>
+
+
+
 <body>
 	<!-- THIS THAT -->
 	<h1>Hello!Welcome to MyIFTTT!</h1>
@@ -16,12 +25,19 @@
 	
 	<%	if(session.getAttribute("userName")==null){%>
 			当前没有用户
+			
 			<a href="/Web_IFTTT/register.jsp"><input type="button" value="register"></input></a>
 			<a href="/Web_IFTTT/login.jsp"><input type="button" value="login"></input></a>
 	<% 	}else{	%>
-		welcome:${userName}
+		<select name=${userName} onchange="jumpMenu(this)">
+        <option value="message">私信</option>
+        <option value="account information" SELECTED>账户信息</option>
+        <option value="logout">退出</option>
+        </select>
+        
 		当前有用户
-   		<a href="/Web_IFTTT/tracelessspring.controller/LogoutServlet"><input type="button" value="Logout"></input></a>
+		
+   		//<a href="/Web_IFTTT/tracelessspring.controller/LogoutServlet"><input type="button" value="Logout"></input></a>
 	<% 		}%>
 	
 	<h2>IF THIS THEN THAT</h2>
