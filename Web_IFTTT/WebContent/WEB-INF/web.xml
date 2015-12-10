@@ -6,18 +6,26 @@
   </welcome-file-list>
   <servlet>
     <servlet-name>RegisterServlet</servlet-name>
-    <servlet-class>tracelessspring.servlet.RegisterServlet</servlet-class>
+    <servlet-class>tracelessspring.controller.RegisterServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>RegisterServlet</servlet-name>
-    <url-pattern>/tracelessspring.servlet/RegisterServlet</url-pattern>
+    <url-pattern>/tracelessspring.controller/RegisterServlet</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>LoginServlet</servlet-name>
-    <servlet-class>tracelessspring.servlet.LoginServlet</servlet-class>
+    <servlet-class>tracelessspring.controller.LoginServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>LoginServlet</servlet-name>
-    <url-pattern>/tracelessspring.servlet/LoginServlet</url-pattern>
+    <url-pattern>/tracelessspring.controller/LoginServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>LogoutServlet</servlet-name>
+    <servlet-class>tracelessspring.controller.LogoutServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LogoutServlet</servlet-name>
+    <url-pattern>/tracelessspring.controller/LogoutServlet</url-pattern>
   </servlet-mapping>
 </web-app>

@@ -66,7 +66,7 @@ function checkRegistForm(form){
 	<h2>注册</h2>
 	<hr>
 	
-	<form method="post" action="/Web_IFTTT/tracelessspring.servlet/RegisterServlet" onsubmit="return checkRegistForm(form)" name="form">
+	<form method="post" action="/Web_IFTTT/tracelessspring.controller/RegisterServlet" onsubmit="return checkRegistForm(form)" name="form">
 		<table width="100%" border="0" align="center">
     <tr>
       <td width="19%" height="26"><div align="center">*用户名</div></td>

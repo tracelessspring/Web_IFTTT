@@ -10,7 +10,7 @@
 	login page!
 	<hr>
 	
-	<form action="/Web_IFTTT/tracelessspring.servlet/LoginServlet" method="post">
+	<form action="/Web_IFTTT/tracelessspring.controller/LoginServlet" method="post">
             <table width="60%" border="1">
                 <tr>
                     <td>userName</td>
