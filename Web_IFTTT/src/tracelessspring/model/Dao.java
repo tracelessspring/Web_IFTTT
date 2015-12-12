@@ -1,5 +1,6 @@
 package tracelessspring.model;
 
+import java.util.ArrayList;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -142,4 +143,96 @@ public class Dao {
 		return correct;
 	}
 	
+	public static User getUser(String userName){
+		String sql="select * from users where userName='"+userName+"'";
+		ResultSet rs=executeQuery(sql);
+		try {
+			rs.next();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			System.out.println("error in rs.next()");
+			e1.printStackTrace();
+		}
+		User user=new User();
+		try {
+			user.setUserName(rs.getString("userName"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("error in function getUser() 1");
+			e.printStackTrace();
+		}
+		try {
+			user.setUserPwd(rs.getString("userPwd"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("error in function getUser() 2");
+			e.printStackTrace();
+		}
+		try {
+			user.setUserMail(rs.getString("userMail"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("error in function getUser() 3");
+			e.printStackTrace();
+		}
+		try {
+			user.setMoney(rs.getString("money"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("error in function getUser() 4");
+			e.printStackTrace();
+		}
+		try {
+			user.setRank(rs.getString("rank"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("error in function getUser() 5");
+			e.printStackTrace();
+		}
+		return user;
+	}
+	
+	public static boolean adminlogin_validate(String userName,String userPwd){
+		
+		System.out.println("already in function adminlogin_validate()");
+		
+		String sql="select * from admin";
+		boolean correct=false;
+		ResultSet rs=executeQuery(sql);
+		try {
+			while(rs.next()){
+				if(userName.equals(rs.getString("adminName"))&&userPwd.equals(rs.getString("adminPwd"))){
+					correct=true;
+					break;
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		closeLink();
+		return correct;
+	}
+	
+	public static ArrayList<User> selectUser(){
+		ArrayList<User> list=new ArrayList<User>();
+		String sql="select * from users";
+		ResultSet rs=Dao.executeQuery(sql);
+		try {
+			while(rs.next()){
+				User user=new User();
+				user.setUserName(rs.getString("userName"));
+				user.setUserPwd(rs.getString("userPwd"));
+				user.setUserMail(rs.getString("userMail"));
+				user.setMoney(rs.getString("money"));
+				user.setRank(rs.getString("rank"));
+				list.add(user);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		closeLink();
+		return list;
+	}
 }

@@ -25,7 +25,9 @@ public class LogoutServlet extends HttpServlet {
     private void doAction(HttpServletRequest request, HttpServletResponse response){
     	response.setContentType("text/html;charset=UTF-8");
     	
-    	request.getSession().removeAttribute("userName");
+    	request.getSession().removeAttribute("user");
+    	//request.getSession().removeAttribute("userName");
+    	//request.getSession().removeAttribute("userMail");
     	
     	String message=String.format("注销成功！3秒钟后跳转到登陆界面...<meta http-equiv='refresh' content='3;url=%s'",
 				request.getContextPath()+"/login.jsp"); 

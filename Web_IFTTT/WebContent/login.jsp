@@ -9,13 +9,11 @@
 <body>
 	login page!
 	<hr>
-	
 	<form action="/Web_IFTTT/tracelessspring.controller/LoginServlet" method="post">
             <table width="60%" border="1">
                 <tr>
                     <td>userName</td>
                     <td>
-                        
                         <input type="text" name="userName">
                     </td>
                 </tr>
@@ -25,6 +23,17 @@
                         <input type="password" name="userPwd">
                     </td>
                 </tr>
+                
+                <tr>
+                	<td>登陆类型</td>
+                	<td>
+                		<select name="loginType">
+                			<option value="user">用户</option>
+                			<option value="admin">管理员</option>
+                		</select>
+                	</td> 
+                </tr>
+                
                 <tr>
                     <td>
                         <input type="reset" value="reset">

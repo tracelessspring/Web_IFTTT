@@ -95,8 +95,9 @@ function checkRegistForm(form){
     
     <tr>
       <td height="22">&nbsp;</td>
-      <td height="22" colspan="2"><input name="submit" type="submit"  value="提交" />
-          <input name="Submit22" type="reset" value="重置">      </td>
+      <td height="22" colspan="2">
+      	  <input name="submit" type="submit"  value="提交" />
+          <input name="Submit22" type="reset" value="重置" />      </td>
     </tr>
   </table>
 </form>            

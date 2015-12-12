@@ -123,45 +123,91 @@ public class LoginServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		System.out.println("loginType is:"+request.getParameter("loginType"));
+		
 		String userName=request.getParameter("userName");
 		String userPwd=request.getParameter("userPwd");
-	
 		out.println(userName);
 		out.println(userPwd);
 		
-		if(Dao.login_validate(userName,userPwd)){
-			System.out.println("find the user");
+		if("user".equals(request.getParameter("loginType"))){
+			if(Dao.login_validate(userName,userPwd)){
+				System.out.println("find the user");
+				
+				request.getSession().setAttribute("user", Dao.getUser(userName));
+				//request.getSession().setAttribute("userName", userName);
+				//request.getSession().setAttribute("userMail", userMail);
 			
-			request.getSession().setAttribute("userName", userName);
-		
-			String message=String.format("congulations!%s,you've been login successfully!!!<meta http-equiv='refresh' content='3;url=%s'",
-					userName,request.getContextPath()+"/index.jsp"); 
-			request.setAttribute("message", message);
-			try {
-				request.getRequestDispatcher("/WEB-INF/pages/message.jsp").forward(request, response);
-			} catch (ServletException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				String message=String.format("congulations!%s,you've been login successfully!!!<meta http-equiv='refresh' content='3;url=%s'",
+						userName,request.getContextPath()+"/user_page.jsp"); 
+				request.setAttribute("message", message);
+				try {
+					request.getRequestDispatcher("/WEB-INF/pages/message.jsp").forward(request, response);
+				} catch (ServletException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			else{
+				System.out.println("cannot find the user");
+				String message=String.format("error in username or password,please check it!!!<meta http-equiv='refresh' content='3;url=%s'",
+						request.getContextPath()+"/login.jsp"); 
+				request.setAttribute("message", message);
+				try {
+					request.getRequestDispatcher("/WEB-INF/pages/message.jsp").forward(request, response);
+				} catch (ServletException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		else if("admin".equals(request.getParameter("loginType"))){
+			if(Dao.adminlogin_validate(userName,userPwd)){
+				System.out.println("admin login successfully");
+				
+				request.getSession().setAttribute("userName", userName);
+				
+				String message=String.format("congulations!%s,you've been login successfully!!!<meta http-equiv='refresh' content='3;url=%s'",
+						userName,request.getContextPath()+"/admin_page.jsp"); 
+				request.setAttribute("message", message);
+				try {
+					request.getRequestDispatcher("/WEB-INF/pages/message.jsp").forward(request, response);
+				} catch (ServletException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			else{
+				System.out.println("cannot find the admin");
+				String message=String.format("error in username or password,please check it!!!<meta http-equiv='refresh' content='3;url=%s'",
+						request.getContextPath()+"/login.jsp"); 
+				request.setAttribute("message", message);
+				try {
+					request.getRequestDispatcher("/WEB-INF/pages/message.jsp").forward(request, response);
+				} catch (ServletException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 		else{
-			System.out.println("cannot find the user");
-			String message=String.format("error in username or password,please check it!!!<meta http-equiv='refresh' content='3;url=%s'",
-					request.getContextPath()+"/login.jsp"); 
-			request.setAttribute("message", message);
-			try {
-				request.getRequestDispatcher("/WEB-INF/pages/message.jsp").forward(request, response);
-			} catch (ServletException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			System.out.println("system error");
 		}
+		
+		
 		
 		
 		

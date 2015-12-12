@@ -7,7 +7,13 @@ public class User {
 	private String money;
 	private String rank;
 	
-	public User(){}
+	public User(){
+		userName="";
+		userPwd="";
+		userMail="";
+		money="";
+		rank="";
+	}
 	
 	public User(String userName,String userPwd,String userMail){
 		this.userName=userName;
