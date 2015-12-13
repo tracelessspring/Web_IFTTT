@@ -11,7 +11,8 @@
 	<select name="url" onChange="if(value!=''){window.location=this.options[this.selectedIndex].value;} else{return false;}">
 		<option value="" selected>${user.userName}</option>
 		<option value="/Web_IFTTT/private_message">私信</option>
-		<option value="/Web_IFTTT/account.jsp">账户信息</option>
+		<option value="/Web_IFTTT/user_information.jsp">账户信息</option>
+		<option value="/Web_IFTTT/user_log.jsp">消费记录</option>
 		<option value="/Web_IFTTT/tracelessspring.controller/LogoutServlet">退出</option>
 	</select>
 </body>

@@ -84,7 +84,7 @@ public class Dao {
 	}
 	
 	public static void modifyUser(User user){        //修改用户信息，主键用户名不能被修改
-		String sql="update users set userPwd='"+user.getUserPwd()+"', userMail='"+user.getUserMail()+"', money='"+user.getMoney()+"', rank='"+user.getRank()+"'";
+		String sql="update users set userPwd='"+user.getUserPwd()+"', userMail='"+user.getUserMail()+"', money='"+user.getMoney()+"', rank='"+user.getRank()+"' where userName='"+user.getUserName()+"'";
 		executeUpdate(sql);
 		closeLink();
 	}
